@@ -124,29 +124,42 @@ public class ArrayTasks {
      * arr = [[3, 1, 2,], [3,2]] -> [[2, 3], [1, 2, 3]]
      * arr = [[5, 4], [7]]       -> [[7], [4, 5]]
      */
-    public int[][] sortRaggedArray(int[][] arr) {
-        for(int i=0; i<arr.length; i++){
-            for(int j=0; j<arr[i].length; j++){
-                for(int k=0; k<arr[i].length; k++){
-                    int temp;
-                    if(arr[i][j] > arr[i][k]){
-                        temp = arr[i][j];
-                        arr[i][j] = arr[i][k];
-                        arr[i][k] = temp;
-                    }
+   public int[][] sortRaggedArray(int[][] arr) {
+        boolean isChanged;
+        //Sorting arrays by length.
+        int[] tempArr;
+        for(int j = 0; j < arr.length; j++){
+            isChanged = false; 
+            for (int i = 1; i < arr.length; i++){
+                if (arr[i - 1].length > arr[i].length){
+                    isChanged = true;
+                    tempArr = arr[i - 1].clone();
+                    arr[i - 1] = arr[i].clone();
+                    arr[i] = tempArr.clone();
                 }
             }
+            if(!isChanged) // if isChanged condition returns false value,for loop breaks so as to save time and reduce the number of operations.
+                break;
         }
-        for(int i=0; i<arr.length; i++){
-            for(int j=1; j<arr.length-1; j++){
-                int[] temp;
-                if(arr[j-1].length > arr[j].length){
-                    temp = arr[j-1];
-                    arr[j-1] = arr[j];
-                    arr[j] = temp;
+
+        //Sorting elements in arrays.
+        int tempInt;
+        for(int[] i : arr){
+            isChanged = false;
+            for (int k = 1; k < i.length; k++){
+                for (int j = 1; j < i.length; j++){
+                    if(i[j - 1] > i[j]){
+                        isChanged = true;
+                        tempInt = i[j];
+                        i[j] = i[j - 1];
+                        i[j - 1] = tempInt;
+                    }
                 }
+                if(!isChanged)
+                    break;
             }
         }
         return arr;
+       
     }
 }
